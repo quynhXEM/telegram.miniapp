@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Click nhận thưởng</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background: #f8f9fa;
+      margin: 0;
+      padding: 30px;
+    }
+    h1 {
+      color: #333;
+    }
+    button {
+      font-size: 20px;
+      padding: 15px 25px;
+      border: none;
+      border-radius: 10px;
+      background: #0088cc;
+      color: white;
+      cursor: pointer;
+    }
+    button:active {
+      background: #005f88;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎁 Game Click Nhận Thưởng</h1>
+  <button id="rewardBtn">Click để nhận thưởng</button>
+  <p id="result"></p>
+
+  <script>
+    const tg = window.Telegram.WebApp;
+    tg.expand(); // mở full màn hình trong Telegram
+
+    const user = tg.initDataUnsafe.user; // lấy thông tin người chơi
+    const result = document.getElementById("result");
+    const btn = document.getElementById("rewardBtn");
+
+    btn.addEventListener("click", () => {
+      // ở đây bạn có thể gọi API backend để ghi nhận thưởng
+      result.innerText = `Bạn ${user?.first_name || "người chơi"} vừa nhận 10 điểm!`;
+
+      // gửi thông tin về bot (qua backend nếu muốn lưu DB)
+      tg.sendData(JSON.stringify({
+        event: "reward_claimed",
+        user_id: user?.id,
+        reward: 10
+      }));
+    });
+  </script>
+</body>
+</html>
